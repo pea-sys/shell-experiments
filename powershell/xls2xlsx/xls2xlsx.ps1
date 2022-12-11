@@ -2,7 +2,7 @@ $targetPath = $Args[0]
 
 $files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like "*.xls" }
 
-$tempDir = New-TemporaryFile | %{ rm $_; mkdir $_ }
+$tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
 Write-Host $tempDir.FullName
 
 $exlFormatDocumentDefault = 51
@@ -11,15 +11,14 @@ $excel = New-Object -ComObject Excel.Application
 $excel.DisplayAlerts = false
 
 
-foreach ($f in $files)
-{
+foreach ($f in $files) {
     Write-Host $f
     $parent = Split-Path -Parent $f.FullName
-    $books = $excel.workbooks.Open($f.FullName)
+    $books = $excel.workbooks.Open($f.FullName, 0, $true)
     $outputfile = $f.Name + "x"
     $outputfile = Join-Path $tempDir.FullName $outputfile
     Write-Host $outputfile
-    # workbooks‚ÌSaveAs‚ªƒTƒuƒtƒHƒ‹ƒ_”z‰º‚Ì‹Ö~•¶š—ñ‚ğƒGƒXƒP[ƒv‚Å‚«‚È‚¢‚½‚ßAƒGƒXƒP[ƒv‰Â”\‚ÈƒRƒs[‚ğ—p‚¢‚ÄŠÔÚ“I‚ÉŠi”[
+    # workbooksï¿½ï¿½SaveAsï¿½ï¿½ï¿½Tï¿½uï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½zï¿½ï¿½ï¿½Ì‹Ö~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½Xï¿½Pï¿½[ï¿½vï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ßAï¿½Gï¿½Xï¿½Pï¿½[ï¿½vï¿½Â”\ï¿½ÈƒRï¿½sï¿½[ï¿½ï¿½pï¿½ï¿½ï¿½ÄŠÔÚ“Iï¿½ÉŠiï¿½[
     $books.SaveAs([ref]$outputfile.ToString(), [ref]$exlFormatDocumentDefault)
     $dist = $f.FullName + "x"
     Copy-Item -LiteralPath $outputfile -Destination $dist -Force
@@ -27,9 +26,9 @@ foreach ($f in $files)
 }
 $excel.DisplayAlerts = true
 $excel.Quit()
-[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)| Out-Null
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
 $excel = $null
-$tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_} | rmdir -Recurse   
+$tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse   
 Remove-Variable -Name excel -ErrorAction SilentlyContinue
 [System.GC]::Collect()
 [System.GC]::WaitForPendingFinalizers()
