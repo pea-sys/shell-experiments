@@ -18,7 +18,7 @@ foreach ($f in $files) {
     $outputfile = $f.Name + "x"
     $outputfile = Join-Path $tempDir.FullName $outputfile
     Write-Host $outputfile
-    # workbooksï¿½ï¿½SaveAsï¿½ï¿½ï¿½Tï¿½uï¿½tï¿½Hï¿½ï¿½ï¿½_ï¿½zï¿½ï¿½ï¿½Ì‹Ö~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½Xï¿½Pï¿½[ï¿½vï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ßAï¿½Gï¿½Xï¿½Pï¿½[ï¿½vï¿½Â”\ï¿½ÈƒRï¿½sï¿½[ï¿½ï¿½pï¿½ï¿½ï¿½ÄŠÔÚ“Iï¿½ÉŠiï¿½[
+    # workbooksE½E½SaveAsE½E½E½TE½uE½tE½HE½E½E½_E½zE½E½E½Ì‹Ö~E½E½E½E½E½E½E½E½GE½XE½PE½[E½vE½Å‚ï¿½E½È‚ï¿½E½E½E½ßAE½GE½XE½PE½[E½vE½Â”\E½ÈƒRE½sE½[E½E½pE½E½E½ÄŠÔÚ“IE½ÉŠiE½[
     $books.SaveAs([ref]$outputfile.ToString(), [ref]$exlFormatDocumentDefault)
     $dist = $f.FullName + "x"
     Copy-Item -LiteralPath $outputfile -Destination $dist -Force
@@ -32,4 +32,3 @@ $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Rec
 Remove-Variable -Name excel -ErrorAction SilentlyContinue
 [System.GC]::Collect()
 [System.GC]::WaitForPendingFinalizers()
-[System.GC]::Collect()
