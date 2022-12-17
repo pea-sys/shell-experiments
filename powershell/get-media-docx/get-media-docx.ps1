@@ -16,8 +16,6 @@ else {
 if (!(Test-Path $outputDir)) {
     New-Item  $outputDir -ItemType Directory
 }
-
-$word = New-Object -ComObject Word.Application
      
 foreach ($f in $files) {
     $tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
@@ -31,7 +29,5 @@ foreach ($f in $files) {
     Copy-Item -LiteralPath $src -Destination $dist -Force  -Recurse
     $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse 
 }
-
-$word.Quit()
 
   
