@@ -4,8 +4,7 @@ $files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -lik
 
 $tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
 Write-Host "Create TemporaryFolder=" $tempDir
- 
-$word = New-Object -ComObject Word.Application
+
 try {
     foreach ($f in $files) {
         Write-Host "■CHECKING"$f
@@ -41,7 +40,6 @@ catch {
 finally {
     $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse  
     Write-Host "Delete TemporaryFolder=" $tempDir
-    $word.Quit()
 }
 
 
