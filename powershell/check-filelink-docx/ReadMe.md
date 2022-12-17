@@ -1,4 +1,4 @@
-# docx-filelink-checker
+# check-filelink-docx
 
 引数で渡されたフォルダパスまたはファイルパスに含まれる  
 docx 形式ファイルに含まれるファイルリンクが有効化チェックするスクリプト
