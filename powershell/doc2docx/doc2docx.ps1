@@ -1,6 +1,6 @@
 $targetPath = $Args[0]
 
-$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like "*.doc" }
+$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.doc' }
 
 $wdFormatDocumentDefault = 16
  
@@ -11,7 +11,7 @@ foreach ($f in $files) {
 
     $doc = $word.Documents.Open($f.FullName, $false, $true)
 
-    $outputfile = $f.FullName + "x"
+    $outputfile = $f.FullName + 'x'
     Write-Host $outputfile
 
     $doc.SaveAs2([ref]$outputfile, [ref]$wdFormatDocumentDefault)

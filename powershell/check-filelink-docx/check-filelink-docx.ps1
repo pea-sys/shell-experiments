@@ -1,23 +1,22 @@
 ﻿$targetPath = $Args[0]
 
-$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like "*.docx" }
+$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.docx' }
 
 $tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
-Write-Host "Create TemporaryFolder=" $tempDir
+Write-Host 'Create TemporaryFolder=' $tempDir
 
 try {
     foreach ($f in $files) {
-        Write-Host "■CHECKING"$f
-        #& 'C:\Program Files\Git\usr\bin\unzip' -o $f.FullName -d $tempDir.FullName  | Out-Null
+        Write-Host '■CHECKING'$f
         Expand-Archive -LiteralPath $f.FullName -DestinationPath $tempDir.FullName -Force
-        $tempFile = Join-Path $tempDir.FullName "word/_rels/document.xml.rels"
+        $tempFile = Join-Path $tempDir.FullName 'word/_rels/document.xml.rels'
         $XML = [XML](Get-Content  -Encoding UTF8  $tempFile)
         foreach ($n in $XML.Relationships.Relationship) {
-            if (!($n.TargetMode -eq "External")) {
+            if (!($n.TargetMode -eq 'External')) {
                 continue;
             }
-            if ($n.Target.StartsWith("file:///")) { 
-                $link = $n.Target.Substring("file:///".Length)
+            if ($n.Target.StartsWith('file:///')) { 
+                $link = $n.Target.Substring('file:///'.Length)
             }
             else {
                 $link = $n.Target
@@ -28,18 +27,18 @@ try {
                 $link = Join-Path $parent  $link
             }
             if (!(Test-Path $link)) {
-                Write-Host "[DEADLINK]"$link
+                Write-Host '[DEADLINK]'$link
             }
         }
     }
 }
 catch {
-    Write-Output "Something threw an exception"
+    Write-Output 'Something threw an exception'
     Write-Output $_
 }     
 finally {
     $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse  
-    Write-Host "Delete TemporaryFolder=" $tempDir
+    Write-Host 'Delete TemporaryFolder=' $tempDir
 }
 
 

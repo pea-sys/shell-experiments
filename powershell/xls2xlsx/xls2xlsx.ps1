@@ -1,6 +1,6 @@
 $targetPath = $Args[0]
 
-$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like "*.xls" }
+$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.xls' }
 
 $tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
 Write-Host $tempDir.FullName
@@ -15,11 +15,11 @@ foreach ($f in $files) {
     Write-Host $f
     $parent = Split-Path -Parent $f.FullName
     $books = $excel.workbooks.Open($f.FullName, 0, $true)
-    $outputfile = $f.Name + "x"
+    $outputfile = $f.Name + 'x'
     $outputfile = Join-Path $tempDir.FullName $outputfile
     Write-Host $outputfile
     $books.SaveAs([ref]$outputfile.ToString(), [ref]$exlFormatDocumentDefault)
-    $dist = $f.FullName + "x"
+    $dist = $f.FullName + 'x'
     Copy-Item -LiteralPath $outputfile -Destination $dist -Force
     $books.Close()
 }
