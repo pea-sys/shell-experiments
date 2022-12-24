@@ -36,8 +36,7 @@ function Get-TextOfDocxDocument {
 function Invoke-GrepOnDocx {
     param (
         [string]$path,
-        [string]$pattern,
-        [switch]$case
+        [string]$pattern
     )
 
     $files = Get-ChildItem -Recurse -LiteralPath $path | ? { $_.Extension -like '*.docx' }
@@ -47,7 +46,7 @@ function Invoke-GrepOnDocx {
             Write-Error ("'{0}' is used by other process!" -f $f.FullName)
             return
         }
-        $grep = $docxContent.Lines | Select-String -Pattern $pattern -AllMatches -CaseSensitive:$case
+        $grep = $docxContent.Lines | Select-String -Pattern $pattern -AllMatches
         foreach ($g in $grep) {
             $text = $g.Line
             if ($text.Length -gt 10) {
@@ -62,5 +61,5 @@ function Invoke-GrepOnDocx {
     }
 }
 
-Invoke-GrepOnDocx $Args[0], $Args[1], $false
+Invoke-GrepOnDocx $Args[0] $Args[1]
 
