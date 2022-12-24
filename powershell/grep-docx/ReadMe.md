@@ -12,5 +12,5 @@ docx 形式ファイルを grep 検索するスクリプト
 - example-1
 
 ```shell
-powershell grep-docx.ps1 {targetFolder} {word}
+pwsh grep-docx.ps1 {targetFolder} {word}
 ```
