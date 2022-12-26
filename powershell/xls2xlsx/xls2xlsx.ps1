@@ -13,7 +13,6 @@ $excel.DisplayAlerts = $false
 
 foreach ($f in $files) {
     Write-Host $f
-    $parent = Split-Path -Parent $f.FullName
     $books = $excel.workbooks.Open($f.FullName, 0, $true)
     $outputfile = $f.Name + 'x'
     $outputfile = Join-Path $tempDir.FullName $outputfile

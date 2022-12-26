@@ -7,13 +7,13 @@ docx 形式ファイルに埋め込まれたメディアファイルを抽出し
 - example-1
 
 ```shell
-powershell get-media-docx.ps1 {targetFolder}
+pwsh get-media-docx.ps1 {targetFolder}
 ```
 
 - example-2
 
 ```shell
-powershell get-media-docx.ps1 {targetFile}
+pwsh get-media-docx.ps1 {targetFile}
 ```
 
 - sample output

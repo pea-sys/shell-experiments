@@ -12,11 +12,11 @@ doc 形式ファイルを一律 docx 形式ファイル(圧縮形式) に変換�
 - example-1
 
 ```shell
-powershell doc2docx.ps1 {targetFolder}
+pwsh doc2docx.ps1 {targetFolder}
 ```
 
 - example-2
 
 ```shell
-powershell doc2docx.ps1 {targetFile}
+pwsh doc2docx.ps1 {targetFile}
 ```
