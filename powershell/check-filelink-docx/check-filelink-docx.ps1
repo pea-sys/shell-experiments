@@ -1,17 +1,23 @@
-﻿$targetPath = $Args[0]
+﻿Add-Type -AssemblyName System.IO.Compression.Filesystem
+
+$targetPath = $Args[0]
 
 $files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.docx' }
 
-$tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
-Write-Host 'Create TemporaryFolder=' $tempDir
-
 try {
     foreach ($f in $files) {
-        Write-Host '■CHECKING'$f
-        Expand-Archive -LiteralPath $f.FullName -DestinationPath $tempDir.FullName -Force
-        $tempFile = Join-Path $tempDir.FullName 'word/_rels/document.xml.rels'
-        $XML = [XML](Get-Content  -Encoding UTF8  $tempFile)
-        foreach ($n in $XML.Relationships.Relationship) {
+        Write-Host '■CHECKING'$f.FullName
+        $compressed = [IO.Compression.Zipfile]::OpenRead($f.FullName)
+        $rels = $compressed.Entries | Where-Object { $_.FullName -like 'word/_rels/document.xml.rels' }
+        $stream = $rels.Open()
+        $reader = New-object System.IO.StreamReader -ArgumentList $stream
+        $xml = [xml]($reader.ReadToEnd())
+        $reader.Close()
+        $reader.Dispose()
+        $stream.Close()
+        $stream.Dispose()
+
+        foreach ($n in $xml.Relationships.ChildNodes) {
             if (!($n.TargetMode -eq 'External')) {
                 continue;
             }
@@ -30,15 +36,12 @@ try {
                 Write-Host '[DEADLINK]'$link
             }
         }
+        $compressed.Dispose()
     }
 }
 catch {
     Write-Output 'Something threw an exception'
     Write-Output $_
 }     
-finally {
-    $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse  
-    Write-Host 'Delete TemporaryFolder=' $tempDir
-}
 
 

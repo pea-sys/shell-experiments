@@ -1,18 +1,26 @@
-﻿$targetPath = $Args[0]
+﻿Add-Type -AssemblyName System.IO.Compression.Filesystem
+
+$targetPath = $Args[0]
 
 $files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.xlsx' }
 
 try {
     foreach ($f in $files) {
-        $tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
-        Write-Host '■CHECKING'$f
-        Expand-Archive -LiteralPath $f.FullName -DestinationPath $tempDir.FullName -Force
-        $tempFolder = Join-Path $tempDir.FullName 'xl/worksheets/_rels'
-        $sheets = Get-ChildItem -Recurse -LiteralPath $tempFolder | ? { $_.Extension -like '*.rels' }
-        foreach ($s in $sheets) {
-            Write-Host 'SHEET'$s.PSChildName
-            $XML = [XML](Get-Content  -Encoding UTF8  $s)
-            foreach ($n in $XML.Relationships.Relationship) {
+        Write-Host '■CHECKING'$f.FullName
+        $compressed = [IO.Compression.Zipfile]::OpenRead($f.FullName)
+        $sheets = $compressed.Entries | Where-Object { $_.FullName -like 'xl/worksheets/_rels/sheet*.xml.rels' }
+
+        foreach ($sheet in $sheets) {
+            Write-Host 'SHEET'$sheet.Name
+            $stream = $sheet.Open()
+            $reader = New-object System.IO.StreamReader -ArgumentList $stream
+            $xml = [xml]($reader.ReadToEnd())
+            $reader.Close()
+            $reader.Dispose()
+            $stream.Close()
+            $stream.Dispose()
+
+            foreach ($n in $xml.Relationships.ChildNodes) {
                 if (!($n.TargetMode -eq 'External')) {
                     continue;
                 }
@@ -32,7 +40,9 @@ try {
                 }
             }
         }
-        $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse  
+        $reader.Close()
+        $stream.Close()
+        $compressed.Dispose()
     }
 }
 catch {
