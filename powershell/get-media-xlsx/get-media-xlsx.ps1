@@ -1,26 +1,29 @@
 $targetPath = $Args[0]
 
-$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like "*.xlsx" }
+$files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.xlsx' }
+
 if (Test-Path $targetPath -PathType Leaf) {
     $targetPath = Split-Path -Parent $targetPath
 }
 
-$outputDir = Join-Path $targetPath "media"
-
-New-Item  $outputDir -ItemType Directory -Force | Out-Null
-
 Write-Host "[Output]"     
 
 foreach ($f in $files) {
-    $tempDir = New-TemporaryFile | % { rm $_; mkdir $_ }
-    Expand-Archive -LiteralPath $f.FullName -DestinationPath $tempDir.FullName
+    $compressed = [IO.Compression.Zipfile]::OpenRead($f.FullName)
+    $medias = $compressed.Entries | Where-Object { $_.FullName -like 'xl/media/*' }
+    $dist_parent = Join-Path $targetPath 'media' $f.Name.Replace('.xlsx', '')
+    foreach ($m in $medias) {
+        if (!(Test-Path $dist_parent)) {
+            New-Item $dist_parent -ItemType Directory
+        }
+        $dist = Join-Path $dist_parent $m.Name
 
-    $src = Join-Path $tempDir.FullName "xl\media"
-    $name = [System.IO.Path]::GetFileNameWithoutExtension($f)
-    $dist = Join-Path $outputDir $name
-    Write-Host $dist
-    Robocopy $src $dist | Out-Null
-    $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse 
+        if (!(Test-Path $dist)) {
+            [System.IO.Compression.ZipFileExtensions]::ExtractToFile($m, $dist)
+            Write-Host $dist
+        }
+    }
+    $compressed.Dispose()
 }
 
   
