@@ -12,11 +12,11 @@ xls 形式ファイルを一律 xlsx 形式ファイル(圧縮形式) に変換�
 - example-1
 
 ```shell
-powershell xls2xlsx.ps1 {targetFolder}
+pwsh xls2xlsx.ps1 {targetFolder}
 ```
 
 - example-2
 
 ```shell
-powershell xls2xlsx.ps1 {targetFile}
+pwsh xls2xlsx.ps1 {targetFile}
 ```
