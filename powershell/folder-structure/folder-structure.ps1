@@ -2,18 +2,70 @@ function Truncate([double]$num, [int]$numDigits = 0) {
     $m = [Math]::Pow(10, $numDigits);
     return [Math]::Truncate($num * $m) / $m;
 }
+function GetGitIgonoreItem([string]$target) {
+    $likeIgnores = @{}
+    $matchIgnores = @{}
+    $lookupTable = @{
+        '[' = '\[' 
+        ']' = '\]'
+    }
+    foreach ($g in $(Get-ChildItem $target -File -Recurse -Force -include '.gitignore')) {
+        $arr = Get-Content $g | Where-Object { ($_ -notlike '#*') -and ($_ -ne '') }
+        $like = $arr.GetEnumerator() | Where-Object { $_.Contains('*') }
+        $match = $arr.GetEnumerator() | Where-Object { !($_.Contains('*')) }
+        foreach ($l in $lookupTable) {
+            $match = $match -replace $l.Key, $l.Value
+        }
+        $parent = Split-Path -Path $g.FullName -Parent
+        
+        $likeIgnores.Add($parent , $like)
+        $matchIgnores.Add($parent , $match)
+    }
+    return $likeIgnores, $matchIgnores
+}
 
-$target = $args[0] #'C:\Users\user\source\repos\PowerToys'
+$target = $args[0] #C:\Users\user\source\repos\PowerToys
 $exclude = @()#'.pack'
 $ext_sizes = @{}
 $total_sizes = 0
 $files = Get-ChildItem $target -File -Recurse -Force
 $not_calc_threshold = 0.01
+$likeIgnores, $matchIgnores = GetGitIgonoreItem($target)
+$isGit = $false #experiment
 #Grouping extension
 foreach ($f in $files) {
     if ($exclude.Contains($f.Extension)) {
         continue
     }
+
+    if ($isGit) {
+        #GitIgnore filter
+        foreach ($l in $likeIgnores.GetEnumerator()) {
+            #target repository
+            if ($f.FullName.Contains($l.Key)) {
+                $currentName = $f.FullName.Replace($l.Key, '')
+                foreach ($i in $l.Value) {
+                    if ($currentName -like $i ) {
+                        Write-Host $currentName
+                        continue
+                    }
+                }
+            }
+        }
+        foreach ($m in $matchIgnores.GetEnumerator()) {
+            #target repository
+            if ($f.FullName.Contains($m.Key)) {
+                $currentName = $f.FullName.Replace($m.Key, '')
+                foreach ($i in $m.Value) {
+                    if ($currentName -match $i ) {
+                        Write-Host $currentName
+                        continue
+                    }
+                }
+            }
+        }
+    }
+
     $f_size = (Get-Item $f).Length
     $ext_sizes[$f.Extension] += $f_size
     $total_sizes += $f_size
