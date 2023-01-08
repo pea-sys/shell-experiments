@@ -1,4 +1,4 @@
-$targetPath = 'C:\Users\user\source\repos\shell-experiments\powershell\xlsx2pdf\work'#$Args[0]
+$targetPath = $Args[0]
 
 $files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.xlsx' }
  
