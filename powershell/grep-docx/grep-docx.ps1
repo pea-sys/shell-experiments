@@ -61,5 +61,15 @@ function Invoke-GrepOnDocx {
     }
 }
 
+if ([string]::IsNullorEmpty($Args[1])) {
+    Write-Host '[Example]'
+    Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>' '<searchPattern>'
+    return
+}
+else {
+    $path = $args[0]
+    $pattern = $args[1]
+}
+
 Invoke-GrepOnDocx $Args[0] $Args[1]
 

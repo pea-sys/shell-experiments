@@ -24,7 +24,15 @@ function GetGitIgonoreItem([string]$target) {
     return $likeIgnores, $matchIgnores
 }
 
-$target = $args[0] #C:\Users\user\source\repos\PowerToys
+if ([string]::IsNullorEmpty($Args[0])) {
+    Write-Host '[Example]'
+    Write-Host  $myInvocation.MyCommand.name '<TargetDirectory>'
+    return
+}
+else {
+    $target = $args[0] #C:\Users\user\source\repos\PowerToys
+}
+
 $exclude = @()#'.pack'
 $ext_sizes = @{}
 $total_sizes = 0

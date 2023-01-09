@@ -1,8 +1,15 @@
 
 Add-Type -AssemblyName System.IO.Compression.Filesystem
 
-$path = $args[0]
-$pattern = $args[1]
+if ([string]::IsNullorEmpty($Args[1])) {
+    Write-Host '[Example]'
+    Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>' '<searchPattern>'
+    return
+}
+else {
+    $path = $args[0]
+    $pattern = $args[1]
+}
 
 $files = Get-ChildItem -Recurse -LiteralPath $path | ? { $_.Extension -like '*.xlsx' }
 foreach ($file in $files) {   
