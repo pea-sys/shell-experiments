@@ -1,6 +1,15 @@
 
 #{ref}(https://qiita.com/AWtnb/items/b70610f78b20adc46765)
 Add-Type -AssemblyName System.IO.Compression.Filesystem
+
+param($path, $pattern)
+
+if ([string]::IsNullorEmpty($pattern)) {
+    Write-Host '[Example]'
+    Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>' '<searchPattern>'
+    return
+}
+
 function Get-TextOfDocxDocument {
     param (
         [string]$path
@@ -61,15 +70,7 @@ function Invoke-GrepOnDocx {
     }
 }
 
-if ([string]::IsNullorEmpty($Args[1])) {
-    Write-Host '[Example]'
-    Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>' '<searchPattern>'
-    return
-}
-else {
-    $path = $args[0]
-    $pattern = $args[1]
-}
+
 
 Invoke-GrepOnDocx $Args[0] $Args[1]
 

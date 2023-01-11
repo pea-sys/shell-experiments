@@ -32,3 +32,6 @@ grep-xlsx.ps1 C:\Users\user\source\repos\grep-xlsx\work "111"
 2.xlsx.sheet1 (14:J14) = 1111
 ========== 2 ==========
 ```
+
+■TODO  
+結合セルの検索

@@ -1,11 +1,9 @@
+param($targetPath)
 
-if ([string]::IsNullorEmpty($Args[0])) {
+if ([string]::IsNullorEmpty($targetPath)) {
     Write-Host '[Example]'
     Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>'
     return
-}
-else {
-    $targetPath = $Args[0]
 }
 
 $files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like '*.xls' }
@@ -17,7 +15,6 @@ $exlFormatDocumentDefault = 51
  
 $excel = New-Object -ComObject Excel.Application
 $excel.DisplayAlerts = $false
-
 
 foreach ($f in $files) {
     Write-Host $f

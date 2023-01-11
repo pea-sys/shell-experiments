@@ -1,3 +1,11 @@
+param($targetPath)
+
+if ([string]::IsNullorEmpty($targetPath)) {
+    Write-Host '[Example]'
+    Write-Host  $myInvocation.MyCommand.name '<TargetDirectory>'
+    return
+}
+
 function Truncate([double]$num, [int]$numDigits = 0) {
     $m = [Math]::Pow(10, $numDigits);
     return [Math]::Truncate($num * $m) / $m;
@@ -24,21 +32,14 @@ function GetGitIgonoreItem([string]$target) {
     return $likeIgnores, $matchIgnores
 }
 
-if ([string]::IsNullorEmpty($Args[0])) {
-    Write-Host '[Example]'
-    Write-Host  $myInvocation.MyCommand.name '<TargetDirectory>'
-    return
-}
-else {
-    $target = $args[0] #C:\Users\user\source\repos\PowerToys
-}
+
 
 $exclude = @()#'.pack'
 $ext_sizes = @{}
 $total_sizes = 0
-$files = Get-ChildItem $target -File -Recurse -Force
+$files = Get-ChildItem $targetPath -File -Recurse -Force
 $not_calc_threshold = 0.01
-$likeIgnores, $matchIgnores = GetGitIgonoreItem($target)
+$likeIgnores, $matchIgnores = GetGitIgonoreItem($targetPath)
 $isGit = $false #experiment
 #Grouping extension
 foreach ($f in $files) {
