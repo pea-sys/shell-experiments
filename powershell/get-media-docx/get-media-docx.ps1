@@ -13,7 +13,7 @@ if (Test-Path $targetPath -PathType Leaf) {
 
 $outputDir = Join-Path $targetPath "media"
 
-New-Item  $outputDir -ItemType Directory -Force | Out-Null
+New-Item  $outputDir -ItemType Directory -Force > $null
      
 Write-Host "[Output]"     
 

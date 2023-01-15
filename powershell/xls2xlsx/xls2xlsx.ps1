@@ -29,7 +29,7 @@ foreach ($f in $files) {
 }
 $excel.DisplayAlerts = $true
 $excel.Quit()
-[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) > $null
 $excel = $null
 $tempDir | ? { Test-Path $_ } | % { ls $_ -File -Recurse | rm; $_ } | rmdir -Recurse   
 Remove-Variable -Name excel -ErrorAction SilentlyContinue

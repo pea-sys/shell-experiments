@@ -22,7 +22,7 @@ foreach ($f in $files) {
 }
 $excel.DisplayAlerts = $true
 $excel.Quit()
-[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) > $null
 $excel = $null
 
 Remove-Variable -Name excel -ErrorAction SilentlyContinue

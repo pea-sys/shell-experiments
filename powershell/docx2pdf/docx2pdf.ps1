@@ -27,4 +27,4 @@ foreach ($f in $files) {
 $word.Quit()
 [gc]::Collect()
 [gc]::WaitForPendingFinalizers()
-[System.Runtime.Interopservices.Marshal]::ReleaseComObject($word) | Out-Null
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($word) > $null
