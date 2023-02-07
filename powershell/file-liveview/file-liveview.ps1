@@ -5,19 +5,23 @@ if ([string]::IsNullorEmpty($targetPath)) {
     Write-Host  $myInvocation.MyCommand.name '<TargetFile>'
     return
 }
-elseif (!(Test-Path $targetPath -PathType Leaf)) {
-    Write-Host  'TargetFile not exits.'
-    return
-}
 
 $pre = $null
+$now = $null
+$raw = $null
 while ($true) {
-    if (!($pre -eq (Get-ItemProperty $targetPath).LastWriteTime)) {
-        $pre = (Get-ItemProperty $targetPath).LastWriteTime
-        cls
-
+    if (!(Test-Path $targetPath -PathType Leaf)) {
+        $raw = "$targetPath not exits."
+        $now = [DateTime]"2000/01/01"
+    }
+    else {
+        $now = (Get-ItemProperty $targetPath).LastWriteTime
         $raw = Get-Content -Path $targetPath -Raw
-        Write-Host -NoNewline "最終更新日時 = $pre `n----------------------------------`n$raw" 
+    }
+    if (!($pre -eq $now)) {
+        cls
+        Write-Host -NoNewline "最終更新日時 = $now `n----------------------------------`n$raw" 
+        $pre = $now
     }
     Start-Sleep -Seconds 1 
 }
