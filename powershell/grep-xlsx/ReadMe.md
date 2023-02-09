@@ -33,5 +33,32 @@ grep-xlsx.ps1 C:\Users\user\source\repos\grep-xlsx\work "111"
 ========== 2 ==========
 ```
 
-■TODO  
-結合セルの検索
+[仕様紐解きメモ]
+
+- 数字は直接「xl/worksheets/sheet\*.xml」に書き込まれる。
+- 文字列は sharedStrings.xml に書き込まれる。  
+  奇妙なことにシートを跨っても sharedSting.xml ファイルは共有されますが、複数シートに同じ文字列がある場合は別々に xml 要素が生成されます。
+  - sharedString に次のように定義されている場合
+
+```xml
+<si>
+    <t>abc</t>
+    <phoneticPr fontId="1"/>
+</si>
+<si>
+    <t>haf</t>
+    <phoneticPr fontId="1"/>
+</si>
+```
+
+- xl/worksheets/sheet\*.xml の G9 が文字列を参照している場合、
+  shareString[0]にアクセスするため、t 属性とインデックスが書き込まれる。
+
+```xml
+<c r="B9">
+    <v>111</v>
+</c>
+<c r="G9" t="s">
+    <v>0</v>
+</c>
+```
