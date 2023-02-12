@@ -1,8 +1,9 @@
-﻿Add-Type -AssemblyName System.IO.Compression.Filesystem
-
+﻿#Requires -PSEdition Core
 param($targetPath)
 
-if ([string]::IsNullorEmpty($Args[0])) {
+Add-Type -AssemblyName System.IO.Compression.Filesystem
+
+if ([string]::IsNullorEmpty($targetPath)) {
     Write-Host '[Example]'
     Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>'
     return

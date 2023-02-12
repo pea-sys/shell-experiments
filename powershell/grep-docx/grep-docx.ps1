@@ -2,13 +2,6 @@
 #{ref}(https://qiita.com/AWtnb/items/b70610f78b20adc46765)
 Add-Type -AssemblyName System.IO.Compression.Filesystem
 
-param($path, $pattern)
-
-if ([string]::IsNullorEmpty($pattern)) {
-    Write-Host '[Example]'
-    Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>' '<searchPattern>'
-    return
-}
 
 function Get-TextOfDocxDocument {
     param (
@@ -16,7 +9,7 @@ function Get-TextOfDocxDocument {
     )
 
     try {
-        $fullPath = (Resolve-Path -Path $path).Path
+        $fullPath = (Resolve-Path -LiteralPath $path).Path
         $compressed = [IO.Compression.Zipfile]::OpenRead($fullPath)
 
         $target = $compressed.Entries | Where-Object { $_.Fullname -eq "word/document.xml" }
@@ -51,10 +44,7 @@ function Invoke-GrepOnDocx {
     $files = Get-ChildItem -Recurse -LiteralPath $path | ? { $_.Extension -like '*.docx' }
     foreach ($f in $files) {
         $docxContent = Get-TextOfDocxDocument -path $f.Fullname
-        if ($docxContent.Status -eq "FILEOPENED") {
-            Write-Error ("'{0}' is used by other process!" -f $f.FullName)
-            return
-        }
+
         $grep = $docxContent.Lines | Select-String -Pattern $pattern -AllMatches
         foreach ($g in $grep) {
             $text = $g.Line

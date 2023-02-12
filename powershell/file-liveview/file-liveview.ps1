@@ -20,7 +20,7 @@ while ($true) {
     }
     if (!($pre -eq $now)) {
         cls
-        Write-Host -NoNewline "最終更新日時 = $now `n----------------------------------`n$raw" 
+        Write-Host -NoNewline "LastUpdateTimeStamp = $now `n----------------------------------`n$raw" 
         $pre = $now
     }
     Start-Sleep -Seconds 1 

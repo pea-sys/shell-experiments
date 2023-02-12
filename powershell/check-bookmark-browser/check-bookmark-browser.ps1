@@ -1,4 +1,4 @@
- 
+#Requires -PSEdition Core 
 $browsers = @{
     "GoogleChrome"  = "C:\Users\user\AppData\Local\Google\Chrome\User Data\Default\Bookmarks"
     "MicrosoftEdge" = "C:\Users\user\AppData\Local\Microsoft\Edge\User Data\Default\Bookmarks"

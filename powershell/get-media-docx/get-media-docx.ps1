@@ -1,3 +1,4 @@
+#Requires -PSEdition Core
 param($targetPath)
 
 if ([string]::IsNullorEmpty($targetPath)) {

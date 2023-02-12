@@ -1,7 +1,6 @@
+param($path, $pattern)
 
 Add-Type -AssemblyName System.IO.Compression.Filesystem
-
-param($path, $pattern)
 
 if ([string]::IsNullorEmpty($pattern)) {
     Write-Host '[Example]'

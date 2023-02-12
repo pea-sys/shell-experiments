@@ -1,3 +1,4 @@
+#Requires -PSEdition Desktop
 param($targetPath)
 
 if ([string]::IsNullorEmpty($targetPath)) {

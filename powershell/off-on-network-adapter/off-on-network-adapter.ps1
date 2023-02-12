@@ -1,3 +1,4 @@
+#Requires -PSEdition Core
 $target = "イーサネット"
 #netshコマンド実行のために管理者権限を要求
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole('Administrators')) {

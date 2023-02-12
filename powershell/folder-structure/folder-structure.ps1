@@ -1,3 +1,4 @@
+#Requires -PSEdition Core
 param($targetPath)
 
 if ([string]::IsNullorEmpty($targetPath)) {
@@ -10,7 +11,7 @@ function Truncate([double]$num, [int]$numDigits = 0) {
     $m = [Math]::Pow(10, $numDigits);
     return [Math]::Truncate($num * $m) / $m;
 }
-function GetGitIgonoreItem([string]$target) {
+function GetGitIgnoreItem([string]$target) {
     $likeIgnores = @{}
     $matchIgnores = @{}
     $lookupTable = @{
@@ -39,8 +40,12 @@ $ext_sizes = @{}
 $total_sizes = 0
 $files = Get-ChildItem $targetPath -File -Recurse -Force
 $not_calc_threshold = 0.01
-$likeIgnores, $matchIgnores = GetGitIgonoreItem($targetPath)
-$isGit = $false #experiment
+$likeIgnores = $null
+$matchIgnores = $null
+$isGit = $true #experiment
+if ($isGit) {
+    $likeIgnores, $matchIgnores = GetGitIgnoreItem($targetPath)
+}
 #Grouping extension
 foreach ($f in $files) {
     if ($exclude.Contains($f.Extension)) {
@@ -112,7 +117,7 @@ $chart.Width *= 2
 $series.ChartType = [System.Windows.Forms.DataVisualization.Charting.SeriesChartType]::Pie
 $series.Points.DataBindXY($ext_Keys, $ext_Values)
 $series.IsXValueIndexed = $true
-$png_output = (Get-Date -UFormat "%Y%m%d%H%M%S") + '_' + (Split-Path $target -Leaf) + '.png'
+$png_output = (Get-Date -UFormat "%Y%m%d%H%M%S") + '_' + (Split-Path $targetPath -Leaf) + '.png'
 $png_output = Join-Path $PSScriptRoot $png_output
 $chart.SaveImage($png_output , "png")
 
