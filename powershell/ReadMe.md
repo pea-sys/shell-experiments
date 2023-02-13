@@ -25,7 +25,7 @@
 | doc2docx               | doc を docx に変換                               | 〇                         | 〇               |
 | xls2xlsx               | xls を xlsx に変換                               | 〇                         | 〇               |                                    |
 | ppt2pptx               | ppt を pptx に変換                               | 〇                         | ×                |                                    |
-| off-on-network-adapter | ネットワークアダプトの定期的な切替スイッチ       | ×                          | 〇               |                                    |
+| off-on-network-adapter | ネットワークアダプタの定期的な切替スイッチ       | ×                          | 〇               |                                    |
 | grep-xlsx              | xlsx の grep 検索                                | 〇                         | 〇               |                                    |
 | grep-docx              | docx の grep 検索                                | 〇                         | 〇               |                                    |
 | get-media-xlsx         | xlsx から media ファイルを抽出                   | ×                          | 〇               |                                    |
@@ -34,3 +34,4 @@
 | file-watcher           | 対象ディレクトリのファイル操作モニタリング       | 〇                         | 〇               |                                    |
 | file-liveview          | 対象ファイルのライブビュー                       | 〇                         | 〇               |                                    |
 | create-image           | 各フォーマットの画像生成                         | 〇                         | 〇               |                                    |
+| create-huge-file       | 巨大ファイルの作成                               | 〇                         | 〇               |
