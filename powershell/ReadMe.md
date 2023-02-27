@@ -36,3 +36,4 @@
 | create-image           | 各フォーマットの画像生成                         | 〇                         | 〇               |                                    |
 | create-huge-file       | 巨大ファイルの作成                               | 〇                         | 〇               |
 | screenshot             | スクリーンショットの自動保存                     | 〇                         | 〇               |
+| split-image            | イメージを等分割します                           | 〇                         | 〇               |
