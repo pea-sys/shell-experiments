@@ -30,7 +30,7 @@
 | grep-xlsx              | xlsx の grep 検索                                | 〇                         | 〇               |                                    |
 | grep-docx              | docx の grep 検索                                | 〇                         | 〇               |                                    |
 | get-media-xlsx         | xlsx から media ファイルを抽出                   | ×                          | 〇               |                                    |
-| get-media-docx         | docx から media ファイルを抽出                   | ×                          |
+| get-media-docx         | docx から media ファイルを抽出                   | ×                          | 〇               |
 | get-media-pptx         | pptx から media ファイルを抽出                   | ×                          | 〇               |                                    |
 | folder-structure       | 対象ディレクトリの拡張子別サイズのチャート図出力 | ×                          | 〇               | gitignore 機能未完                 |
 | file-watcher           | 対象ディレクトリのファイル操作モニタリング       | 〇                         | 〇               |                                    |
