@@ -39,3 +39,4 @@
 | create-huge-file       | 巨大ファイルの作成                               | 〇                         | 〇               |
 | screenshot             | スクリーンショットの自動保存                     | 〇                         | 〇               |
 | split-image            | イメージを等分割します                           | 〇                         | 〇               |
+| check-grammar          | word を使用してテキストファイルの校正チェック    | ×                          | 〇               |

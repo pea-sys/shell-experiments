@@ -1,3 +1,4 @@
+#Requires -PSEdition Core
 $targetPath = $Args[0]
 
 $files = Get-ChildItem -Recurse -LiteralPath $targetPath | ? { $_.Extension -like "*.pptx" }
