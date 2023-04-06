@@ -1,8 +1,6 @@
 #Requires -PSEdition Core
 param($targetPath)
 
-param($targetPath)
-
 if ([string]::IsNullorEmpty($targetPath)) {
     Write-Host '[Example]'
     Write-Host  $myInvocation.MyCommand.name '<TargetFile|TargetDirectory>'
